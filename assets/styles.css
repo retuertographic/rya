@@ -661,3 +661,9 @@ table.datos.pares td:first-child{
 .faq-r{padding:0 22px 18px;color:var(--muted)}
 .faq-r p{margin:0}
 @media (prefers-reduced-motion:reduce){.faq-item summary svg{transition:none}}
+
+/* Selector de idioma */
+.topbar .lang{display:inline-flex;align-items:center;gap:6px;font-weight:500;letter-spacing:.04em}
+.topbar .lang a{color:#C4D8CC;text-decoration:none}
+.topbar .lang a:hover{color:#fff}
+.topbar .lang [aria-current]{color:#fff;text-decoration:underline;text-underline-offset:3px}

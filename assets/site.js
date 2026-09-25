@@ -1,3 +1,15 @@
+// Textos de la interfaz según el idioma de la página (<html lang>).
+var EN = (document.documentElement.lang || '').slice(0, 2) === 'en';
+var T = EN ? {
+  abrir: 'Open menu', cerrar: 'Close menu', verDic: 'See in the glossary',
+  nombre: 'Name', telefono: 'Phone', correo: 'Email', ramo: 'Insurance of interest',
+  asunto: 'Quote request', una: '1 company found', varias: ' companies found'
+} : {
+  abrir: 'Abrir menú', cerrar: 'Cerrar menú', verDic: 'Ver en el diccionario',
+  nombre: 'Nombre', telefono: 'Teléfono', correo: 'Correo', ramo: 'Seguro de interés',
+  asunto: 'Solicitud de presupuesto', una: '1 compañía encontrada', varias: ' compañías encontradas'
+};
+
 // Menú responsive
 (function () {
   var btn = document.getElementById('navToggle');
@@ -6,7 +18,7 @@
   btn.addEventListener('click', function () {
     var open = nav.classList.toggle('open');
     btn.setAttribute('aria-expanded', String(open));
-    btn.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    btn.setAttribute('aria-label', open ? T.cerrar : T.abrir);
   });
   nav.addEventListener('click', function (e) {
     if (e.target.tagName === 'A') nav.classList.remove('open');
@@ -47,7 +59,7 @@
     caja.querySelector('p').textContent = a.dataset.def;
     var ver = caja.querySelector('a');
     ver.href = a.getAttribute('href');
-    ver.textContent = 'Ver en el diccionario';
+    ver.textContent = T.verDic;
     document.body.appendChild(caja);
     var r = a.getBoundingClientRect();
     var ancho = caja.offsetWidth;
@@ -210,15 +222,15 @@
     e.preventDefault();
     var v = function (n) { var el = form.elements[n]; return el ? el.value.trim() : ''; };
     var cuerpo = [
-      'Nombre: ' + v('nombre'),
-      'Teléfono: ' + v('telefono'),
-      'Correo: ' + v('email'),
-      'Seguro de interés: ' + v('ramo'),
+      T.nombre + ': ' + v('nombre'),
+      T.telefono + ': ' + v('telefono'),
+      T.correo + ': ' + v('email'),
+      T.ramo + ': ' + v('ramo'),
       '',
       v('mensaje')
     ].join('\n');
     var url = 'mailto:' + form.dataset.to +
-      '?subject=' + encodeURIComponent('Solicitud de presupuesto — ' + (v('nombre') || 'web')) +
+      '?subject=' + encodeURIComponent(T.asunto + ' — ' + (v('nombre') || 'web')) +
       '&body=' + encodeURIComponent(cuerpo);
     var msg = document.getElementById('formMsg');
     if (msg) msg.classList.add('show');
@@ -252,7 +264,7 @@
     if (vacio) vacio.hidden = visibles !== 0;
     if (conteo) {
       conteo.textContent = q
-        ? (visibles === 1 ? '1 compañía encontrada' : visibles + ' compañías encontradas')
+        ? (visibles === 1 ? T.una : visibles + T.varias)
         : base;
     }
   }
