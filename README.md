@@ -9,7 +9,10 @@ Sitio web estático y bilingüe de Retuerto y Asociados (227 páginas en españo
   `blog/guias/` (con `ciberseguridad/`, `ocupacion-ilegal/`, `vivir-de-alquiler/`,
   `enfermedades-graves/` y `vehiculos-industriales-y-agricolas/`). En inglés: `en/blog/…`
   (`newsletters/`, `archive/`, `publications/`, `guides/`…).
-- Las antiguas direcciones `blog.html` y `categoria-*.html` redirigen a las nuevas.
+- Cada artículo vive dentro de la carpeta de su categoría, p. ej.
+  `blog/guias/vivir-de-alquiler/fianza-y-desperfectos-al-dejar-un-piso-de-alquiler/`
+  o `blog/boletines/cuarentena-y-filomena/` (en inglés, `en/blog/guides/renting/…`).
+- Las antiguas direcciones (`blog.html`, `categoria-*.html`, `articulo-*.html`) redirigen a las nuevas.
 - `assets/` — estilos, script y logotipos compartidos. `site.js` adapta sus textos al idioma de la página (`<html lang>`).
 - Cada página enlaza a su equivalente con el selector ES · EN de la barra superior y con `hreflang`.
 - Publicado con GitHub Pages (Deploy from a branch) en https://retuertographic.github.io/rya/ y https://retuertographic.github.io/rya/en/
