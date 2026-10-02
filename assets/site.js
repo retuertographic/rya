@@ -270,3 +270,18 @@ var T = EN ? {
   }
   campo.addEventListener('input', filtrar);
 })();
+
+// Botones flotantes (WhatsApp y «volver arriba»): se apartan mientras el
+// formulario de contacto está a la vista, para no tapar sus campos ni el botón de envío.
+(function () {
+  var formularios = document.querySelectorAll('.crm-form, [data-formulario-crm]');
+  if (!formularios.length || !('IntersectionObserver' in window)) return;
+  var vistos = new Set();
+  var obs = new IntersectionObserver(function (entradas) {
+    entradas.forEach(function (e) {
+      if (e.isIntersecting) vistos.add(e.target); else vistos.delete(e.target);
+    });
+    document.documentElement.classList.toggle('form-a-la-vista', vistos.size > 0);
+  });
+  formularios.forEach(function (f) { obs.observe(f); });
+})();

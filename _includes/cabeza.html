@@ -1,0 +1,38 @@
+{%- comment -%} <head> común a todas las páginas (ES y EN). {%- endcomment -%}
+<!DOCTYPE html>
+<html lang="{% if page.lang == "en" %}en{% else %}es{% endif %}">
+<head>
+<meta charset="utf-8">
+{% include head-comun.html %}{% if page.noindex %}<meta name="robots" content="noindex">
+{% endif %}{% if page.bilingue %}{% include idioma-error.html %}{% endif %}<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page.title }}</title>
+<meta name="description" content="{{ page.description }}">
+{% unless page.noindex %}<link rel="canonical" href="{{ url_propia }}">
+{% endunless %}<meta property="og:title" content="{% if page.og_title %}{{ page.og_title }}{% else %}{{ page.title | replace: '"', '&quot;' }}{% endif %}">
+<meta property="og:description" content="{% if page.og_description %}{{ page.og_description }}{% else %}{{ page.description }}{% endif %}">
+<meta property="og:type" content="{% if es_articulo %}article{% else %}website{% endif %}">
+<meta property="og:site_name" content="Retuerto y Asociados">
+{% if page.lang == "en" %}<meta property="og:locale" content="en_GB">
+{% unless page.noindex %}<meta property="og:locale:alternate" content="es_ES">
+{% endunless %}{% else %}<meta property="og:locale" content="es_ES">
+{% unless page.noindex %}<meta property="og:locale:alternate" content="en_GB">
+{% endunless %}{% endif %}{% unless page.noindex %}<meta property="og:url" content="{{ url_propia }}">
+{% endunless %}<meta property="og:image" content="{{ base_abs }}/assets/compartir.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{% if page.lang == "en" %}Retuerto y Asociados, Insurance Brokers{% else %}Retuerto y Asociados, Correduría de Seguros{% endif %}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Playfair+Display:wght@600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ r_raiz }}assets/styles.css">
+<link rel="icon" href="{{ r_raiz }}assets/favicon.ico" sizes="32x32">
+<link rel="icon" href="{{ r_raiz }}assets/favicon.png" type="image/png" sizes="256x256">
+<link rel="apple-touch-icon" href="{{ r_raiz }}assets/favicon.png">
+<meta name="theme-color" content="#1C5C41">
+{% unless page.noindex %}<link rel="alternate" hreflang="es" href="{{ url_es }}">
+<link rel="alternate" hreflang="en" href="{{ url_en }}">
+<link rel="alternate" hreflang="x-default" href="{{ url_es }}">
+{% include datos-estructurados.html %}{% endunless %}</head>
+<body>
+{% include body-comun.html %}

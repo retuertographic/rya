@@ -1,0 +1,11 @@
+{%- comment -%} Páginas de error (404 y error.html): un único archivo para ES y EN. Si la dirección pedida
+está bajo en/, la página pasa a inglés antes de pintarse (textos, título, cabecera y pie). {%- endcomment -%}
+<script>(function () {
+  var ruta = location.pathname, base = '{{ site.baseurl }}';
+  if (base && ruta.indexOf(base + '/') === 0) ruta = ruta.slice(base.length);
+  if (!/^\/en(\/|$)/.test(ruta)) return;
+  var html = document.documentElement;
+  html.classList.add('e404-en');
+  html.lang = 'en';{% if page.title_en %}
+  document.title = {{ page.title_en | jsonify }};{% endif %}
+})();</script>

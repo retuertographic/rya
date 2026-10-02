@@ -1,1 +1,1 @@
-{% include variables.html %}{% if page.lang == "en" %}{% include cabecera-en.html %}{% else %}{% include cabecera-es.html %}{% endif %}{{ content }}{% if page.lang == "en" %}{% include pie-en.html %}{% else %}{% include pie-es.html %}{% endif %}
+{% include variables.html %}{% if page.lang == "en" %}{% include cabecera-en.html %}{% else %}{% include cabecera-es.html %}{% endif %}{{ content }}{% if page.bilingue %}{% include pie-bilingue.html %}{% elsif page.lang == "en" %}{% include pie-en.html %}{% else %}{% include pie-es.html %}{% endif %}

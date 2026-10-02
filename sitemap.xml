@@ -10,6 +10,9 @@ sitemap: false
   {%- if p.lang == "en" -%}{%- assign es = "/" | append: p.alt -%}{%- assign en = p.url -%}{%- else -%}{%- assign es = p.url -%}{%- assign en = "/" | append: p.alt -%}{%- endif %}
   <url>
     <loc>{{ base_abs }}{{ p.url | xml_escape }}</loc>
+    {%- if p.actualizado %}
+    <lastmod>{{ p.actualizado | date: "%Y-%m-%d" }}</lastmod>
+    {%- endif %}
     <xhtml:link rel="alternate" hreflang="es" href="{{ base_abs }}{{ es | xml_escape }}"/>
     <xhtml:link rel="alternate" hreflang="en" href="{{ base_abs }}{{ en | xml_escape }}"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{ base_abs }}{{ es | xml_escape }}"/>

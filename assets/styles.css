@@ -551,6 +551,11 @@ footer.site ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;font-size
   .arriba{width:42px;height:42px;bottom:80px;right:18px}
   .arriba svg{width:18px;height:18px}
 }
+/* En pantallas estrechas los botones flotantes tapan el formulario de contacto: se ocultan mientras está a la vista */
+.wa,.arriba{transition:opacity .2s ease,visibility .2s ease,transform .15s ease}
+@media (max-width:900px){
+  html.form-a-la-vista .wa,html.form-a-la-vista .arriba{opacity:0;visibility:hidden;pointer-events:none}
+}
 
 @media (max-width:640px){
   .topbar .wrap{justify-content:flex-start}
@@ -693,3 +698,7 @@ html.e404-redirige .e404-cuerpo,html.e404-redirige .e404 .panel{display:none}
 .eyebrow-light{display:block;font-size:12.5px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:#BFE6D2;margin-bottom:10px}
 .eerror .e404-botones .btn svg{margin-right:6px}
 .eerror .note{max-width:760px}
+
+/* Páginas de error en inglés: se oculta la cabecera española hasta que se cambia por la inglesa */
+html.e404-en:not(.e404-listo) body > .topbar,html.e404-en:not(.e404-listo) body > .site-header,
+html.e404-en:not(.e404-listo) body > footer.site{visibility:hidden}

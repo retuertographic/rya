@@ -1,0 +1,20 @@
+{%- comment -%} Pie de las páginas de error (404 y error.html). Se sirve el pie en español y, en las
+direcciones en inglés, se cambian la barra superior, la cabecera y el pie por los de la versión inglesa
+antes de cargar site.js. {%- endcomment -%}
+{% include pie-cuerpo-es.html %}
+{%- assign alt = "" -%}{%- capture r_idioma -%}{{ site.baseurl }}/en/{%- endcapture -%}{%- assign propio = r_idioma %}
+<template id="barra-en">{% include barra-en.html %}</template>
+<template id="pie-en">{% include pie-cuerpo-en.html %}</template>
+<script>(function () {
+  var html = document.documentElement;
+  if (!html.classList.contains('e404-en')) return;
+  function cambiar(id, selector) {
+    var viejos = document.querySelectorAll(selector);
+    viejos[0].parentNode.insertBefore(document.importNode(document.getElementById(id).content, true), viejos[0]);
+    Array.prototype.forEach.call(viejos, function (el) { el.remove(); });
+  }
+  cambiar('barra-en', 'body > .topbar, body > .site-header');
+  cambiar('pie-en', 'body > footer.site, body > .arriba, body > .wa');
+  html.classList.add('e404-listo');
+})();</script>
+{% include scripts.html %}

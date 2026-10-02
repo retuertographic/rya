@@ -1,0 +1,51 @@
+{%- comment -%} Datos estructurados (JSON-LD) para buscadores: la correduría en todas las páginas, las migas de pan
+(sacadas del propio <div class="crumbs"> de la página) y el artículo en las entradas del blog. {%- endcomment -%}
+{%- assign org_id = base_abs | append: "/#correduria" -%}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"InsuranceAgency","@id":{{ org_id | jsonify }},
+"name":"Retuerto y Asociados, Correduría de Seguros","alternateName":"Retuerto y Asociados",
+"url":{{ base_abs | append: "/" | jsonify }},"logo":{{ base_abs | append: "/assets/logo.png" | jsonify }},
+"image":{{ base_abs | append: "/assets/compartir.png" | jsonify }},
+"telephone":"+34 922 235 203","email":"info@retuertoyasociados.com","foundingDate":"1992",
+"address":{"@type":"PostalAddress","streetAddress":"C/ Calderón de la Barca, Nº 2 of. 3","postalCode":"38005",
+"addressLocality":"Santa Cruz de Tenerife","addressRegion":"Canarias","addressCountry":"ES"},
+"identifier":{"@type":"PropertyValue","propertyID":"Registro DGSFP","value":"J-2690"},
+"sameAs":["https://www.linkedin.com/company/retuertoseguros","https://www.facebook.com/RetuertoSeguros","https://www.instagram.com/retuertoseguros"]}
+</script>
+{%- if content contains '<div class="crumbs">' -%}
+{%- assign migas = content | split: '<div class="crumbs">' | slice: 1 | first | split: '</div>' | first | split: '<span>/</span>' -%}
+{%- assign carpetas = page.url | split: "/" -%}
+{%- assign ultimo_car = page.url | slice: -1, 1 -%}
+{%- if ultimo_car == "/" -%}{%- assign n_carpetas = carpetas.size | minus: 1 -%}{%- else -%}{%- assign n_carpetas = carpetas.size | minus: 2 -%}{%- endif %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{%- for miga in migas -%}
+{%- if miga contains 'href="' and forloop.last == false -%}
+{%- assign enlace = miga | split: 'href="' | last | split: '"' | first -%}
+{%- assign resto = enlace | remove: "../" | remove: "./" -%}
+{%- assign subidas = enlace.size | minus: resto.size | divided_by: 3 -%}
+{%- if enlace contains "../" -%}{%- else -%}{%- assign subidas = 0 -%}{%- endif -%}
+{%- assign quedan = n_carpetas | minus: subidas -%}
+{%- capture ruta -%}{%- for c in carpetas offset: 1 limit: quedan -%}{{ c }}/{%- endfor -%}{{ resto }}{%- endcapture -%}
+{%- assign ruta = ruta | append: "§" | replace: "index.html§", "" | remove: "§" -%}
+{%- capture destino -%}{{ base_abs }}/{{ ruta }}{%- endcapture -%}
+{%- assign nombre = miga | split: '</a>' | first | strip_html -%}{%- comment -%} el último eslabón es la propia página (puede llevar enlaces al diccionario) {%- endcomment -%}
+{%- else -%}
+{%- assign destino = url_propia -%}
+{%- assign nombre = miga | strip_html -%}
+{%- endif -%}
+{%- assign nombre = nombre | replace: "&amp;", "&" | replace: "&#x27;", "'" | replace: "&quot;", '"' | strip -%}
+{"@type":"ListItem","position":{{ forloop.index }},"name":{{ nombre | jsonify }},"item":{{ destino | jsonify }}}{% unless forloop.last %},{% endunless %}
+{%- endfor -%}
+]}
+</script>
+{%- endif -%}
+{%- if es_articulo -%}
+{%- assign titular = content | split: '<h1>' | slice: 1 | first | split: '</h1>' | first | strip_html | replace: "&amp;", "&" | replace: "&#x27;", "'" | replace: "&quot;", '"' | strip %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":{{ titular | jsonify }},"description":{{ page.description | jsonify }},
+"inLanguage":"{% if page.lang == "en" %}en{% else %}es{% endif %}","mainEntityOfPage":{{ url_propia | jsonify }},
+"image":{{ base_abs | append: "/assets/compartir.png" | jsonify }},{% if page.actualizado %}"dateModified":{{ page.actualizado | date: "%Y-%m-%d" | jsonify }},{% endif %}
+"author":{"@id":{{ org_id | jsonify }}},"publisher":{"@id":{{ org_id | jsonify }}}}
+</script>
+{%- endif %}

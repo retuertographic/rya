@@ -17,3 +17,6 @@
 {%- else -%}
 {%- capture url_es -%}{{ base_abs }}{{ page.url }}{%- endcapture -%}{%- capture url_en -%}{{ base_abs }}/{{ page.alt }}{%- endcapture -%}
 {%- endif -%}
+{%- if page.lang == "en" -%}{%- assign url_propia = url_en -%}{%- else -%}{%- assign url_propia = url_es -%}{%- endif -%}
+{%- assign alt = page.alt -%}
+{%- if content contains 'class="articulo-body"' -%}{%- assign es_articulo = true -%}{%- else -%}{%- assign es_articulo = false -%}{%- endif -%}

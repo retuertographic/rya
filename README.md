@@ -38,8 +38,16 @@ Sitio web bilingüe, generado con Jekyll por GitHub Pages, de Retuerto y Asociad
 
 GitHub Pages monta la web con Jekyll al publicar; el visitante recibe HTML estático.
 
-- `_includes/cabecera-es.html` / `cabecera-en.html`: `<head>`, barra superior y menú.
-- `_includes/pie-es.html` / `pie-en.html`: pie, botones flotantes y scripts.
+- `_includes/cabecera-es.html` / `cabecera-en.html`: `<head>` (`cabeza.html`, común a los dos idiomas)
+  + barra superior y menú (`barra-es.html` / `barra-en.html`).
+- `_includes/pie-es.html` / `pie-en.html`: pie y botones flotantes (`pie-cuerpo-es.html` /
+  `pie-cuerpo-en.html`) + scripts (`scripts.html`).
+- `_includes/cabeza.html` incluye la etiqueta canonical, Open Graph / Twitter Card (imagen para
+  compartir: `assets/compartir.png`, 1200×630) y `datos-estructurados.html` (JSON-LD de la
+  correduría, migas de pan sacadas del `<div class="crumbs">` de cada página y artículo en el blog).
+- `404.html` y `error.html` llevan `bilingue: true`: un solo archivo para los dos idiomas que, en las
+  direcciones bajo `en/`, cambia textos, título, cabecera y pie a inglés (`idioma-error.html`,
+  `pie-bilingue.html`).
 - `_includes/head-comun.html`: lo que va en el `<head>` de todas las páginas (Google Tag Manager
   y el script del banner de cookies). `_includes/body-comun.html`: justo después de `<body>`.
 - `_includes/variables.html`: calcula las rutas relativas según la profundidad de cada página.
@@ -48,7 +56,9 @@ GitHub Pages monta la web con Jekyll al publicar; el visitante recibe HTML está
   - `lang`: `es` o `en`; `title` y `description`: título y descripción;
   - `alt`: su versión en el otro idioma (ruta desde la raíz, p. ej. `en/tenant-insurance.html`);
   - `activo`: elemento del menú marcado (opcional); `formulario: true` si lleva el formulario del CRM;
-  - `pie_asegurado` / `pie_rc: false` si el pie no debe repetir esos enlaces al glosario.
+  - `pie_asegurado` / `pie_rc: false` si el pie no debe repetir esos enlaces al glosario;
+  - `actualizado`: fecha del último cambio de contenido (AAAA-MM-DD). Va al `<lastmod>` del sitemap y
+    a la fecha de modificación de los artículos: **actualízala al cambiar el texto de una página**.
 - `sitemap.xml` y `robots.txt` se generan solos con todas las páginas.
 - Dominio: al pasar a `retuertoyasociados.com`, cambiar `url` y `baseurl` en `_config.yml`.
 - Para probar en local: `bundle exec jekyll serve` con la gema `github-pages`.
