@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-{% include head-comun.html %}<meta name="viewport" content="width=device-width, initial-scale=1">
+{% include head-comun.html %}{% if page.noindex %}<meta name="robots" content="noindex">
+{% endif %}<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ page.title }}</title>
 <meta name="description" content="{{ page.description }}">
 <meta property="og:title" content="{% if page.og_title %}{{ page.og_title }}{% else %}{{ page.title | replace: '"', '&quot;' }}{% endif %}">
@@ -16,10 +17,10 @@
 <link rel="icon" href="{{ r_raiz }}assets/favicon.png" type="image/png" sizes="256x256">
 <link rel="apple-touch-icon" href="{{ r_raiz }}assets/favicon.png">
 <meta name="theme-color" content="#1C5C41">
-<link rel="alternate" hreflang="es" href="{{ url_es }}">
+{% unless page.noindex %}<link rel="alternate" hreflang="es" href="{{ url_es }}">
 <link rel="alternate" hreflang="en" href="{{ url_en }}">
 <link rel="alternate" hreflang="x-default" href="{{ url_es }}">
-</head>
+{% endunless %}</head>
 <body>
 {% include body-comun.html %}<div class="topbar"><div class="wrap">
   <div class="tb-items">

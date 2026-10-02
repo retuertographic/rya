@@ -6,7 +6,11 @@
 {%- capture r_raiz -%}{%- for i in (1..prof) -%}../{%- endfor -%}{%- endcapture -%}
 {%- if page.lang == "en" -%}{%- assign prof_idioma = prof | minus: 1 -%}{%- else -%}{%- assign prof_idioma = prof -%}{%- endif -%}
 {%- capture r_idioma -%}{%- for i in (1..prof_idioma) -%}../{%- endfor -%}{%- endcapture -%}
-{%- if ultimo == "/" -%}{%- assign propio = "./" -%}{%- else -%}{%- assign propio = partes | last -%}{%- endif -%}
+{%- if page.absoluto -%}
+{%- capture r_raiz -%}{{ site.baseurl }}/{%- endcapture -%}
+{%- if page.lang == "en" -%}{%- capture r_idioma -%}{{ site.baseurl }}/en/{%- endcapture -%}{%- else -%}{%- assign r_idioma = r_raiz -%}{%- endif -%}
+{%- endif -%}
+{%- if page.absoluto -%}{%- assign propio = r_idioma -%}{%- elsif ultimo == "/" -%}{%- assign propio = "./" -%}{%- else -%}{%- assign propio = partes | last -%}{%- endif -%}
 {%- capture base_abs -%}{{ site.url }}{{ site.baseurl }}{%- endcapture -%}
 {%- if page.lang == "en" -%}
 {%- capture url_en -%}{{ base_abs }}{{ page.url }}{%- endcapture -%}{%- capture url_es -%}{{ base_abs }}/{{ page.alt }}{%- endcapture -%}

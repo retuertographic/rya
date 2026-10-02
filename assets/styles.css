@@ -673,3 +673,17 @@ table.datos.pares td:first-child{
 .crm-form iframe{display:block;width:100%;border:0;overflow:hidden;background:transparent;height:740px}
 .crm-form-alt{margin:10px 0 0;font-size:13.5px;color:var(--muted)}
 .crm-form-alt a{color:inherit;text-decoration:underline}
+
+/* Página 404 */
+.e404 .e404-en{display:none}
+html.e404-en .e404 .e404-en{display:block}
+html.e404-en .e404 span.e404-en{display:inline}
+html.e404-en .e404 .e404-es{display:none}
+.e404-cabecera .wrap{position:relative;overflow:hidden}
+.e404-num{display:block;font-family:var(--font-display);font-weight:700;font-size:clamp(84px,16vw,168px);line-height:.9;letter-spacing:-.04em;color:rgba(255,255,255,.14);margin:0 0 6px}
+.e404-cabecera h1{max-width:22ch}
+.e404-aviso{display:none;margin-top:18px!important;font-weight:500;color:#fff!important}
+html.e404-redirige .e404-aviso{display:block}
+html.e404-redirige .e404-cuerpo,html.e404-redirige .e404 .panel{display:none}
+.e404-botones{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 40px}
+.e404-cuerpo .section-head{margin-bottom:18px}

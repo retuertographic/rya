@@ -5,7 +5,7 @@ sitemap: false
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 {%- assign base_abs = site.url | append: site.baseurl -%}
-{%- assign paginas = site.pages | where: "layout", "pagina" | sort: "url" -%}
+{%- assign paginas = site.pages | where: "layout", "pagina" | where_exp: "p", "p.sitemap != false" | sort: "url" -%}
 {%- for p in paginas %}
   {%- if p.lang == "en" -%}{%- assign es = "/" | append: p.alt -%}{%- assign en = p.url -%}{%- else -%}{%- assign es = p.url -%}{%- assign en = "/" | append: p.alt -%}{%- endif %}
   <url>
