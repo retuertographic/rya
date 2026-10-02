@@ -687,3 +687,9 @@ html.e404-redirige .e404-aviso{display:block}
 html.e404-redirige .e404-cuerpo,html.e404-redirige .e404 .panel{display:none}
 .e404-botones{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 40px}
 .e404-cuerpo .section-head{margin-bottom:18px}
+
+/* Página de error temporal (servida por el service worker) */
+.eerror-num{letter-spacing:.2em}
+.eyebrow-light{display:block;font-size:12.5px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:#BFE6D2;margin-bottom:10px}
+.eerror .e404-botones .btn svg{margin-right:6px}
+.eerror .note{max-width:760px}
