@@ -1,0 +1,15 @@
+# Configuración de Jekyll para GitHub Pages.
+# Al pasar a un dominio propio basta con cambiar estas dos líneas, p. ej.
+#   url: "https://retuertoyasociados.com"
+#   baseurl: ""
+url: "https://retuertographic.github.io"
+baseurl: "/rya"
+
+# Sin tema: la web lleva su propio CSS (assets/styles.css).
+theme: null
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor

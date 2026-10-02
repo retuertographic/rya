@@ -1,6 +1,6 @@
 # Retuerto y Asociados — Correduría de Seguros
 
-Sitio web estático y bilingüe de Retuerto y Asociados (227 páginas en español y 227 en inglés): inicio, seguros para particulares, comercios y empresas, blog, diccionario, teléfonos de asistencia y páginas legales.
+Sitio web bilingüe, generado con Jekyll por GitHub Pages, de Retuerto y Asociados (227 páginas en español y 227 en inglés): inicio, seguros para particulares, comercios y empresas, blog, diccionario, teléfonos de asistencia y páginas legales.
 
 - `*.html` — versión en español (raíz del sitio).
 - `en/*.html` — versión en inglés (las páginas nuevas tienen slug en inglés).
@@ -33,3 +33,22 @@ Sitio web estático y bilingüe de Retuerto y Asociados (227 páginas en españo
   equivalente en la web nueva; si no hay equivalente, muestra una página de error con enlaces.
 - Las direcciones antiguas indexadas que se localizaron tienen además su propia redirección
   (carpetas `blog-retuertoseguros/`, `tienda-seguros-online-tenerife/`, `seguros-para-…-tenerife/`…).
+
+## Estructura con Jekyll (partials)
+
+GitHub Pages monta la web con Jekyll al publicar; el visitante recibe HTML estático.
+
+- `_includes/cabecera-es.html` / `cabecera-en.html`: `<head>`, barra superior y menú.
+- `_includes/pie-es.html` / `pie-en.html`: pie, botones flotantes y scripts.
+- `_includes/head-comun.html`: lo que va en el `<head>` de todas las páginas (Google Tag Manager
+  y el script del banner de cookies). `_includes/body-comun.html`: justo después de `<body>`.
+- `_includes/variables.html`: calcula las rutas relativas según la profundidad de cada página.
+- `_layouts/pagina.html`: une cabecera + contenido + pie. `_layouts/redireccion.html`: redirecciones.
+- Cada página tiene solo su `<main>` y un front matter:
+  - `lang`: `es` o `en`; `title` y `description`: título y descripción;
+  - `alt`: su versión en el otro idioma (ruta desde la raíz, p. ej. `en/tenant-insurance.html`);
+  - `activo`: elemento del menú marcado (opcional); `formulario: true` si lleva el formulario del CRM;
+  - `pie_asegurado` / `pie_rc: false` si el pie no debe repetir esos enlaces al glosario.
+- `sitemap.xml` y `robots.txt` se generan solos con todas las páginas.
+- Dominio: al pasar a `retuertoyasociados.com`, cambiar `url` y `baseurl` en `_config.yml`.
+- Para probar en local: `bundle exec jekyll serve` con la gema `github-pages`.

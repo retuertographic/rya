@@ -1,0 +1,8 @@
+{% include variables.html %}<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>Redirigiendo…</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="{{ base_abs }}/{{ page.destino }}">
+<meta http-equiv="refresh" content="0; url={{ r_raiz }}{{ page.destino }}">
+</head>
+<body><p>Esta página se ha movido a <a href="{{ r_raiz }}{{ page.destino }}">{{ base_abs }}/{{ page.destino }}</a>.</p></body></html>

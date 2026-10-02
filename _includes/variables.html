@@ -1,0 +1,15 @@
+{%- comment -%} Rutas relativas según la profundidad de la página y direcciones absolutas del sitio. {%- endcomment -%}
+{%- assign partes = page.url | split: "/" -%}
+{%- assign ultimo = page.url | slice: -1, 1 -%}
+{%- if ultimo == "/" -%}{%- assign prof = partes.size | minus: 1 -%}{%- else -%}{%- assign prof = partes.size | minus: 2 -%}{%- endif -%}
+{%- if prof < 0 -%}{%- assign prof = 0 -%}{%- endif -%}
+{%- capture r_raiz -%}{%- for i in (1..prof) -%}../{%- endfor -%}{%- endcapture -%}
+{%- if page.lang == "en" -%}{%- assign prof_idioma = prof | minus: 1 -%}{%- else -%}{%- assign prof_idioma = prof -%}{%- endif -%}
+{%- capture r_idioma -%}{%- for i in (1..prof_idioma) -%}../{%- endfor -%}{%- endcapture -%}
+{%- if ultimo == "/" -%}{%- assign propio = "./" -%}{%- else -%}{%- assign propio = partes | last -%}{%- endif -%}
+{%- capture base_abs -%}{{ site.url }}{{ site.baseurl }}{%- endcapture -%}
+{%- if page.lang == "en" -%}
+{%- capture url_en -%}{{ base_abs }}{{ page.url }}{%- endcapture -%}{%- capture url_es -%}{{ base_abs }}/{{ page.alt }}{%- endcapture -%}
+{%- else -%}
+{%- capture url_es -%}{{ base_abs }}{{ page.url }}{%- endcapture -%}{%- capture url_en -%}{{ base_abs }}/{{ page.alt }}{%- endcapture -%}
+{%- endif -%}

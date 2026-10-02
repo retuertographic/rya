@@ -1,4 +1,8 @@
+---
+layout: null
+sitemap: false
+---
 User-agent: *
 Allow: /
 
-Sitemap: https://retuertographic.github.io/rya/sitemap.xml
+Sitemap: {{ site.url }}{{ site.baseurl }}/sitemap.xml
