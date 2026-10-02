@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Página no encontrada | Retuerto y Asociados, Correduría de Seguros</title>
+<style>
+body{margin:0;font-family:Jost,"Segoe UI",system-ui,-apple-system,Arial,sans-serif;background:#F4F7F5;color:#16211C;display:grid;min-height:100vh;place-items:center;padding:16px;box-sizing:border-box}
+main{max-width:560px;background:#fff;border:1px solid #E1E8E4;border-radius:14px;padding:32px 28px;box-shadow:0 8px 24px rgba(18,61,43,.07)}
+h1{font-family:"Playfair Display",Georgia,serif;font-size:28px;margin:0 0 10px;color:#123D2B}
+p{line-height:1.6;color:#2F3A34}
+a{color:#1C5C41}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.btns a{display:inline-block;padding:10px 18px;border-radius:999px;background:#1C5C41;color:#fff;text-decoration:none}
+.btns a.sec{background:#EAF2EE;color:#123D2B}
+</style>
+</head>
+<body>
+<main id="caja">
+  <h1 id="titulo">Buscando la página…</h1>
+  <p id="texto">Un momento: esta dirección es de la web anterior y te estamos llevando a su equivalente.</p>
+  <div class="btns" id="botones" hidden>
+    <a id="ir-inicio" href="./">Ir al inicio</a>
+    <a class="sec" id="ir-blog" href="blog/">Blog</a>
+    <a class="sec" id="ir-contacto" href="contacto.html">Contacto</a>
+  </div>
+</main>
+<script>
+// Equivalencias entre direcciones de la web anterior (Joomla) y la web nueva.
+// destino(ruta, DATOS) → ruta nueva relativa a la raíz del sitio ('' = inicio).
+function destino(ruta, DATOS) {
+  var p = decodeURIComponent(String(ruta || '')).toLowerCase()
+    .replace(/[?#].*$/, '').replace(/\.(html?|php)$/, '').replace(/^\/+|\/+$/g, '');
+  if (!p || p === 'index') return '';
+  var seg = p.split('/');
+  var ult = seg[seg.length - 1];
+
+  // Glosario: /asistencia/diccionario-de-seguros/<término>, /component/seoglossary/…/<término>
+  if (/diccionario|seoglossary|glosario/.test(p)) {
+    var t = 't-' + ult.replace(/^\d+-/, '');
+    return 'diccionario-de-seguros.html' + (DATOS.glosario.indexOf(t) >= 0 ? '#' + t : '');
+  }
+  // Blog: /blog-retuertoseguros/<artículo>, /blog-seguros-tenerife/…
+  if (/^blog/.test(seg[0]) || seg[0] === 'covid-19') {
+    if (seg[0] === 'covid-19') return 'blog/archivo/covid/';
+    if (seg.length === 1 || /^(author|tag|category)$/.test(seg[1])) return 'blog/';
+    if (DATOS.excepciones && DATOS.excepciones[ult]) return DATOS.excepciones[ult];
+    var slug = ult.replace(/-\d+$/, '');
+    if (DATOS.articulos[slug]) return DATOS.articulos[slug];
+    if (/-(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)-\d{4}$/.test(ult)) return 'blog/boletines/';
+    if (/^te-informa|boletin/.test(ult)) return 'blog/boletines/';
+    var mejor = parecido(slug, DATOS.articulos);
+    if (mejor) return mejor;
+    if (/volcan|palma|ccs|consorcio/.test(slug)) return 'blog/archivo/volcan/';
+    if (/covid|coronavirus|alarma/.test(slug)) return 'blog/archivo/covid/';
+    return 'blog/';
+  }
+  // Páginas sueltas
+  var SUELTAS = [
+    [/borrasca|therese/, 'declaracion-borrasca-therese.html'],
+    [/declaracion-idea|idea/, 'declaracion-idea.html'],
+    [/telefonos/, 'telefonos-de-asistencia.html'],
+    [/cuadro.*medico/, 'cuadros-medicos.html'],
+    [/lunas/, 'reparacion-de-lunas.html'],
+    [/e-cliente|ecliente|view=login|users/, 'registro-ecliente.html'],
+    [/presupuesto/, 'presupuesto-gratis.html'],
+    [/comparativa/, 'comparativa-personalizada.html'],
+    [/aviso-legal/, 'aviso-legal.html'],
+    [/privacidad/, 'politica-de-privacidad.html'],
+    [/cookies/, 'cookies.html'],
+    [/transparencia/, 'politica-de-transparencia.html'],
+    [/informacion-previa/, 'informacion-previa-a-facilitar-al-cliente.html'],
+    [/mapa/, 'mapa-web.html'],
+    [/conocenos|quienes-somos|nosotros/, 'conocenos.html'],
+    [/gestion-riesgos|gerencia/, 'gerencia-de-riesgos.html'],
+    [/consultoria/, 'consultoria.html'],
+    [/contacto|rsform|estamos-contigo/, 'contacto.html']
+  ];
+  for (var i = 0; i < SUELTAS.length; i++) if (SUELTAS[i][0].test(p)) return SUELTAS[i][1];
+
+  // Fichas de seguro: producto + destinatario (particulares, comercios/autónomos, empresas)
+  var PRODUCTOS = [
+    [/ciber/, 'ciberseguridad'], [/ocupaci|okupa/, 'ocupacion-ilegal'], [/inquilino/, 'inquilinos'],
+    [/enfermedad/, 'enfermedades-graves'], [/vehiculos-industriales/, 'vehiculos-industriales-agricolas'],
+    [/flota/, 'flota-vehiculos'], [/tractor|maquinaria/, 'maquinaria-agricola'], [/agrari|ganader/, 'agrarios'],
+    [/credito|caucion/, 'credito-caucion'], [/defensa|juridic/, 'defensa-juridica'],
+    [/responsabilidad-civil|(^|-)rc(-|$)/, 'resp-civil'], [/administrador|directivo/, 'administradores'],
+    [/medioambiental|medio-ambiente/, 'medioambiental'], [/transporte|mercancia/, 'transportes'],
+    [/multirriesgo.*industrial|industrial/, 'multirriesgo-industrial'], [/multirriesgo|comercio-seguro|seguros?-de-comercio/, 'multirriesgo-comercio'],
+    [/dependencia/, 'dependencia-esp'], [/dron/, 'drones-esp'], [/piragua|kayak/, 'piraguas-kayaks-esp'],
+    [/titulo/, 'titulo-propiedad-esp'], [/vacacional/, 'alquiler-vacacional'], [/impago/, 'impago-alquiler'],
+    [/comunidad/, 'comunidades'], [/embarcacion|barco|nautic/, 'embarcaciones-recreo'], [/patinete/, 'patinete'],
+    [/decesos/, 'decesos'], [/jubilacion|pension/, 'jubilacion'], [/ahorro/, 'ahorro'], [/accidente/, 'accidentes'],
+    [/salud|medico/, 'salud'], [/vida/, 'vida'], [/hogar|vivienda|casa/, 'hogar'], [/moto/, 'moto'], [/(^|-)auto(s|movil|moviles)?(-|$)|coche/, 'auto']
+  ];
+  var quien = /empresa/.test(ult) ? 'empresas' : /comercio|autonomo/.test(ult) ? 'comercios'
+            : /particular/.test(ult) ? 'particulares'
+            : /empresa/.test(p) ? 'empresas' : /comercio|autonomo/.test(p) ? 'comercios' : 'particulares';
+  for (var j = 0; j < PRODUCTOS.length; j++) {
+    if (!PRODUCTOS[j][0].test(ult)) continue;
+    var orden = [quien, 'particulares', 'comercios', 'empresas'];
+    for (var k = 0; k < orden.length; k++) {
+      var f = 'seguro-' + PRODUCTOS[j][1] + '-' + orden[k] + '.html';
+      if (DATOS.fichas.indexOf(f) >= 0) return f;
+    }
+  }
+  // Páginas de categoría
+  if (/especial/.test(p)) return 'especiales.html';
+  if (/particular/.test(ult)) return 'particulares.html';
+  if (/comercio|autonomo/.test(ult)) return 'comercios-autonomos.html';
+  if (/empresa/.test(ult)) return 'empresas.html';
+  if (/asistencia/.test(p)) return 'asistencia.html';
+  if (/seguro|tienda/.test(p)) return /especial/.test(p) ? 'especiales.html' : /empresa/.test(p) ? 'empresas.html'
+       : /comercio|autonomo/.test(p) ? 'comercios-autonomos.html' : 'particulares.html';
+  return '';
+}
+
+// Artículo más parecido por palabras en común (al menos la mitad de las del enlace antiguo).
+function parecido(slug, articulos) {
+  var vacias = { de: 1, la: 1, el: 1, los: 1, las: 1, en: 1, y: 1, a: 1, con: 1, del: 1, que: 1, un: 1, una: 1, por: 1, para: 1, su: 1, tu: 1 };
+  // Los alias nuevos se recortaron a unos 80 caracteres: si uno es el principio del otro, es ese.
+  var claves = Object.keys(articulos);
+  for (var i = 0; i < claves.length; i++) {
+    var c = claves[i].replace(/-+$/, '');
+    if (c.length >= 30 && (slug.indexOf(c) === 0 || c.indexOf(slug) === 0)) return articulos[claves[i]];
+  }
+  var pal = slug.split('-').filter(function (w) { return w && !vacias[w]; });
+  if (pal.length < 2) return '';
+  var mejor = '', nota = 0;
+  claves.forEach(function (s) {
+    var otras = s.split('-');
+    var comunes = pal.filter(function (w) { return otras.indexOf(w) >= 0; }).length;
+    var n = comunes / pal.length + (otras[0] === pal[0] ? 0.5 : 0);  // «novena nota…» ≠ «cuarta nota…»
+    if (n > nota) { nota = n; mejor = articulos[s]; }
+  });
+  return nota >= 0.75 ? mejor : '';
+}
+
+
+
+var DATOS = {"articulos": {"7-de-cada-10-empresas-mal-aseguradas-cierran-por-siniestros": "blog/boletines/7-de-cada-10-empresas-mal-aseguradas-cierran-por-siniestros/", "a-quien-cubre-mi-poliza-de-automovil": "blog/boletines/a-quien-cubre-mi-poliza-de-automovil/", "ahorrando-para-la-vuelta-al-cole": "blog/boletines/ahorrando-para-la-vuelta-al-cole/", "aligera-tu-irpf": "blog/boletines/aligera-tu-irpf/", "alto-al-fuego-en-los-bosques": "blog/boletines/alto-al-fuego-en-los-bosques/", "ano-de-nieves-ano-de-bienes-seguros": "blog/boletines/ano-de-nieves-ano-de-bienes-seguros/", "ano-nuevo-seguro-nuevo": "blog/boletines/ano-nuevo-seguro-nuevo/", "asi-se-protegen-los-comercios-de-los-riesgos-extraordinarios": "blog/boletines/asi-se-protegen-los-comercios-de-los-riesgos-extraordinarios/", "asistencia-emocional-para-atender-a-clientes-afectados-por-el-volcan-d": "blog/archivo/volcan/asistencia-emocional-para-atender-a-clientes-afectados-por-el-volcan-d/", "asunto-de-vida-o-muerte": "blog/boletines/asunto-de-vida-o-muerte/", "autonomos-y-enfermedad-grave-proteger-ingresos": "blog/guias/enfermedades-graves/autonomos-y-enfermedad-grave-proteger-ingresos/", "ayuda-a-los-inquilinos": "blog/archivo/covid/ayuda-a-los-inquilinos/", "barcos-seguros-en-el-puerto-y-en-el-mar": "blog/boletines/barcos-seguros-en-el-puerto-y-en-el-mar/", "campamentos-de-verano-un-exito-asegurado": "blog/boletines/campamentos-de-verano-un-exito-asegurado/", "carpe-diem-miedo-a-morir-o-miedo-a-vivir": "blog/boletines/carpe-diem-miedo-a-morir-o-miedo-a-vivir/", "ciber-seguridad": "blog/archivo/covid/ciber-seguridad/", "circulando-seguros-con-nuestra-nueva-bicicleta": "blog/boletines/circulando-seguros-con-nuestra-nueva-bicicleta/", "claves-para-renovar-el-seguro-de-hogar-con-toda-confianza": "blog/boletines/claves-para-renovar-el-seguro-de-hogar-con-toda-confianza/", "coberturas-imprescindibles-para-viajar-seguro": "blog/boletines/coberturas-imprescindibles-para-viajar-seguro/", "como-asegurar-el-futuro-de-los-estudiantes": "blog/boletines/como-asegurar-el-futuro-de-los-estudiantes/", "como-elegir-el-mejor-seguro-para-la-moto": "blog/boletines/como-elegir-el-mejor-seguro-para-la-moto/", "como-elegir-el-mejor-seguro-para-practicar-deportes-en-invierno": "blog/boletines/como-elegir-el-mejor-seguro-para-practicar-deportes-en-invierno/", "como-prevenir-la-ocupacion-de-una-vivienda-vacia": "blog/guias/ocupacion-ilegal/como-prevenir-la-ocupacion-de-una-vivienda-vacia/", "como-proteger-a-ninos-y-mayores-de-los-golpes-de-calor-este-verano": "blog/boletines/como-proteger-a-ninos-y-mayores-de-los-golpes-de-calor-este-verano/", "como-se-cubren-los-danos-provocados-por-un-volcan": "blog/boletines/como-se-cubren-los-danos-provocados-por-un-volcan/", "consejos-para-conducir-seguro-en-verano": "blog/boletines/consejos-para-conducir-seguro-en-verano/", "consejos-para-viajar-en-coche-de-forma-segura-en-invierno": "blog/boletines/consejos-para-viajar-en-coche-de-forma-segura-en-invierno/", "cuando-tu-inquilino-no-puede-pagar-el-alquiler": "blog/boletines/cuando-tu-inquilino-no-puede-pagar-el-alquiler/", "cuanto-debo-ahorrar-para-mantener-el-nivel-de-vida-tras-la-jubilacion": "blog/boletines/cuanto-debo-ahorrar-para-mantener-el-nivel-de-vida-tras-la-jubilacion/", "cuarentena-y-filomena": "blog/boletines/cuarentena-y-filomena/", "cuarta-nota-informativa-sobre-la-actividad-del-ccs-con-ocasion-de-la-e": "blog/archivo/volcan/cuarta-nota-informativa-sobre-la-actividad-del-ccs-con-ocasion-de-la-e/", "cubre-el-seguro-la-cancelacion-de-grandes-eventos": "blog/boletines/cubre-el-seguro-la-cancelacion-de-grandes-eventos/", "cuidado-al-volante-es-viernes": "blog/boletines/cuidado-al-volante-es-viernes/", "cuidado-con-el-perro-ya-no-es-suficiente": "blog/boletines/cuidado-con-el-perro-ya-no-es-suficiente/", "cuidado-con-los-ronquidos": "blog/boletines/cuidado-con-los-ronquidos/", "cuidado-tu-tienes-la-culpa-cuando-atropellas-a-un-animal-si-o-si": "blog/boletines/cuidado-tu-tienes-la-culpa-cuando-atropellas-a-un-animal-si-o-si/", "de-corrales-y-corralitos": "blog/boletines/de-corrales-y-corralitos/", "decalogo-sobre-como-actuar-en-caso-de-tener-sintomas-de-covid-19": "blog/archivo/covid/decalogo-sobre-como-actuar-en-caso-de-tener-sintomas-de-covid-19/", "declaracion-electronica-de-accidente": "blog/publicaciones/declaracion-electronica-de-accidente/", "depende-solo-de-ti": "blog/boletines/depende-solo-de-ti/", "deporte-seguro-tras-pasar-la-covid19": "blog/boletines/deporte-seguro-tras-pasar-la-covid19/", "deportes-nauticos-a-prueba-de-riesgos-este-verano": "blog/boletines/deportes-nauticos-a-prueba-de-riesgos-este-verano/", "derecho-de-desistimiento-en-seguros-de-vida": "blog/archivo/covid/derecho-de-desistimiento-en-seguros-de-vida/", "desempleados-pero-segurados": "blog/boletines/desempleados-pero-segurados/", "despues-de-un-terremoto-viene-la-calma": "blog/boletines/despues-de-un-terremoto-viene-la-calma/", "diagnostico-grave-y-economia-familiar": "blog/guias/enfermedades-graves/diagnostico-grave-y-economia-familiar/", "diez-horas-en-el-infierno-de-bermeo": "blog/boletines/diez-horas-en-el-infierno-de-bermeo/", "disfrutar-del-verano-con-un-viaje-asegurado": "blog/boletines/disfrutar-del-verano-con-un-viaje-asegurado/", "domina-tus-incertidumbres-mejor-prevenir-que-curar": "blog/boletines/domina-tus-incertidumbres-mejor-prevenir-que-curar/", "durante-el-estado-de-alarma-habra-cobertura-en-los-seguros-de-coche": "blog/archivo/covid/durante-el-estado-de-alarma-habra-cobertura-en-los-seguros-de-coche/", "el-banco-no-sera-el-unico-en-ofrecer-un-seguro-de-hipoteca": "blog/boletines/el-banco-no-sera-el-unico-en-ofrecer-un-seguro-de-hipoteca/", "el-corredor-de-seguros-y-tu-como-consumidor": "blog/boletines/el-corredor-de-seguros-y-tu-como-consumidor/", "el-que-guarda-siempre-tiene": "blog/boletines/el-que-guarda-siempre-tiene/", "el-seguro-de-decesos-del-siglo-xxi": "blog/boletines/el-seguro-de-decesos-del-siglo-xxi/", "el-seguro-de-responsabilidad-civil-el-mejor-escudo-para-la-pyme-y-su-p": "blog/boletines/el-seguro-de-responsabilidad-civil-el-mejor-escudo-para-la-pyme-y-su-p/", "el-seguro-de-vida-una-inversion-de-futuro": "blog/boletines/el-seguro-de-vida-una-inversion-de-futuro/", "el-seguro-responde-al-mal-tiempo": "blog/boletines/el-seguro-responde-al-mal-tiempo/", "emprende-y-duerme-tranquilo": "blog/boletines/emprende-y-duerme-tranquilo/", "empresa-familiar-va-por-ustedes": "blog/boletines/empresa-familiar-va-por-ustedes/", "en-la-carretera-mercancia-segura": "blog/boletines/en-la-carretera-mercancia-segura/", "en-la-piscina-cuida-tambien-tu-salud": "blog/boletines/en-la-piscina-cuida-tambien-tu-salud/", "enlaces-de-interes-covid-19-y-seguros": "blog/archivo/covid/enlaces-de-interes-covid-19-y-seguros/", "entrevista-de-pyme-seguros-a-alicia-retuerto": "blog/publicaciones/entrevista-de-pyme-seguros-a-alicia-retuerto/", "eres-cabeza-de-familia": "blog/boletines/eres-cabeza-de-familia/", "esta-su-empresa-infra-asegurada": "blog/boletines/esta-su-empresa-infra-asegurada/", "expedientes-de-regulacion-de-empleo-temporales": "blog/archivo/covid/expedientes-de-regulacion-de-empleo-temporales/", "fianza-y-desperfectos-al-dejar-un-piso-de-alquiler": "blog/guias/vivir-de-alquiler/fianza-y-desperfectos-al-dejar-un-piso-de-alquiler/", "flota-mixta-furgonetas-camiones-y-maquinaria": "blog/guias/vehiculos-industriales-y-agricolas/flota-mixta-furgonetas-camiones-y-maquinaria/", "fraude-del-ceo-phishing-y-facturas-falsas": "blog/guias/ciberseguridad/fraude-del-ceo-phishing-y-facturas-falsas/", "fuego-que-hacer": "blog/boletines/fuego-que-hacer/", "ha-pensado-ya-en-el-futuro": "blog/boletines/ha-pensado-ya-en-el-futuro/", "hay-que-devolver-el-dinero-del-seguro-de-autos": "blog/archivo/covid/hay-que-devolver-el-dinero-del-seguro-de-autos/", "hogar-dulce-hogar": "blog/boletines/hogar-dulce-hogar/", "imponer-contratos-de-seguros": "blog/archivo/covid/imponer-contratos-de-seguros/", "incapacidad-laboral-que-es": "blog/boletines/incapacidad-laboral-que-es/", "la-compra-de-navidad-responsable": "blog/boletines/la-compra-de-navidad-responsable/", "la-dgt-declara-la-guerra-al-movil": "blog/boletines/la-dgt-declara-la-guerra-al-movil/", "la-navidad-tiempo-de-reencuentros-y-siniestros": "blog/boletines/la-navidad-tiempo-de-reencuentros-y-siniestros/", "la-nueva-movilidad-en-verano": "blog/boletines/la-nueva-movilidad-en-verano/", "la-seguridad-en-el-amor-tambien-existe": "blog/boletines/la-seguridad-en-el-amor-tambien-existe/", "la-seguridad-vial-prioridad-del-verano": "blog/boletines/la-seguridad-vial-prioridad-del-verano/", "las-mejores-opciones-para-viajar-seguro-esta-semana-santa": "blog/boletines/las-mejores-opciones-para-viajar-seguro-esta-semana-santa/", "las-terribles-consecuencias-de-la-gota-fria-2": "blog/boletines/las-terribles-consecuencias-de-la-gota-fria-2/", "las-terribles-consecuencias-de-la-gota-fria": "blog/boletines/las-terribles-consecuencias-de-la-gota-fria/", "mas-seguros-para-disfrutar-de-los-deportes-de-invierno": "blog/boletines/mas-seguros-para-disfrutar-de-los-deportes-de-invierno/", "mascotas-un-tesoro-que-cuidar": "blog/boletines/mascotas-un-tesoro-que-cuidar/", "medidas-covid-19-de-las-companias-aseguradoras": "blog/archivo/covid/medidas-covid-19-de-las-companias-aseguradoras/", "no-siempre-evitar-la-ocasion-evita-el-peligro-pero-ayuda": "blog/boletines/no-siempre-evitar-la-ocasion-evita-el-peligro-pero-ayuda/", "nota-informativa-del-ccs-sobre-la-indemnizacion-de-los-danos-por-erupc": "blog/archivo/volcan/nota-informativa-del-ccs-sobre-la-indemnizacion-de-los-danos-por-erupc/", "novena-nota-informativa-sobre-la-actividad-del-consorcio-de-compensaci": "blog/archivo/volcan/novena-nota-informativa-sobre-la-actividad-del-consorcio-de-compensaci/", "nuestros-clientes-tienen-cada-ano-50-millones-de-problemas-nosotros-lo": "blog/boletines/nuestros-clientes-tienen-cada-ano-50-millones-de-problemas-nosotros-lo/", "nuestros-datos-siempre-bien-protegidos": "blog/boletines/nuestros-datos-siempre-bien-protegidos/", "nuevo-coronavirus-que-hacer": "blog/archivo/covid/nuevo-coronavirus-que-hacer/", "nuevos-incentivos-para-ahorrar-con-los-planes-de-pensiones": "blog/boletines/nuevos-incentivos-para-ahorrar-con-los-planes-de-pensiones/", "ocupacion-ilegal-allanamiento-o-usurpacion": "blog/guias/ocupacion-ilegal/ocupacion-ilegal-allanamiento-o-usurpacion/", "para-viajar-seguro-consulte-a-su-corredor": "blog/boletines/para-viajar-seguro-consulte-a-su-corredor/", "pepe-el-propietario-del-2-b-ya-no-paga-las-cuotas-de-tu-comunidad": "blog/boletines/pepe-el-propietario-del-2-b-ya-no-paga-las-cuotas-de-tu-comunidad/", "primeras-48-horas-tras-un-ciberataque": "blog/guias/ciberseguridad/primeras-48-horas-tras-un-ciberataque/", "profesionales-responsables-y-asegurados": "blog/boletines/profesionales-responsables-y-asegurados/", "proposito-de-ano-nuevo-revisar-tus-seguros": "blog/boletines/proposito-de-ano-nuevo-revisar-tus-seguros/", "proteccion-de-datos-y-covid-19": "blog/archivo/covid/proteccion-de-datos-y-covid-19/", "puesta-a-punto-para-el-coche": "blog/boletines/puesta-a-punto-para-el-coche/", "que-cubre-un-seguro-de-ciberriesgo": "blog/guias/ciberseguridad/que-cubre-un-seguro-de-ciberriesgo/", "que-es-el-periodo-de-gracia-del-seguro": "blog/boletines/que-es-el-periodo-de-gracia-del-seguro/", "que-es-un-seguro-de-enfermedades-graves": "blog/guias/enfermedades-graves/que-es-un-seguro-de-enfermedades-graves/", "que-es-y-que-cubre-la-asistencia-en-viaje": "blog/boletines/que-es-y-que-cubre-la-asistencia-en-viaje/", "que-hacer-si-tu-vehiculo-choca-contra-un-animal": "blog/boletines/que-hacer-si-tu-vehiculo-choca-contra-un-animal/", "que-puedo-hacer-para-protegerme-del-nuevo-coronavirus-y-otros-virus": "blog/archivo/covid/que-puedo-hacer-para-protegerme-del-nuevo-coronavirus-y-otros-virus/", "que-un-cliente-no-arruine-su-empresa": "blog/boletines/que-un-cliente-no-arruine-su-empresa/", "que-un-imprevisto-no-arruine-su-fiesta": "blog/boletines/que-un-imprevisto-no-arruine-su-fiesta/", "quinta-nota-informativa-aclaraciones-del-consorcio-de-compensacion-de-": "blog/archivo/volcan/quinta-nota-informativa-aclaraciones-del-consorcio-de-compensacion-de-/", "renovarse-y-vivir-tranquilos": "blog/boletines/renovarse-y-vivir-tranquilos/", "responsabilidad-civil-del-inquilino-danos-al-vecino": "blog/guias/vivir-de-alquiler/responsabilidad-civil-del-inquilino-danos-al-vecino/", "responsabilidad-es-la-unica-forma-de-alcanzar-el-exito": "blog/boletines/responsabilidad-es-la-unica-forma-de-alcanzar-el-exito/", "sabe-como-puede-ayudarle-el-seguro-de-dependencia": "blog/boletines/sabe-como-puede-ayudarle-el-seguro-de-dependencia/", "sabia-que-mas-de-21-millones-de-espanoles-tienen-seguro-de-decesos": "blog/boletines/sabia-que-mas-de-21-millones-de-espanoles-tienen-seguro-de-decesos/", "segunda-nota-informativa-del-ccs-sobre-la-erupcion-volcanica-en-la-pal": "blog/archivo/volcan/segunda-nota-informativa-del-ccs-sobre-la-erupcion-volcanica-en-la-pal/", "seguro-de-camion-y-vehiculo-industrial": "blog/guias/vehiculos-industriales-y-agricolas/seguro-de-camion-y-vehiculo-industrial/", "seguro-de-hogar-para-inquilinos-que-te-toca-asegurar": "blog/guias/vivir-de-alquiler/seguro-de-hogar-para-inquilinos-que-te-toca-asegurar/", "seguro-de-hogar-y-ocupacion-que-revisar-en-tu-poliza": "blog/guias/ocupacion-ilegal/seguro-de-hogar-y-ocupacion-que-revisar-en-tu-poliza/", "seguro-sobre-ruedas": "blog/boletines/seguro-sobre-ruedas/", "seguros-agrarios-y-ganaderos-el-mundo-rural-siempre-mira-al-cielo": "blog/boletines/seguros-agrarios-y-ganaderos-el-mundo-rural-siempre-mira-al-cielo/", "seguros-de-viaje-si-gracias": "blog/boletines/seguros-de-viaje-si-gracias/", "seguros-de-viaje": "blog/boletines/seguros-de-viaje/", "seguros-para-navegar-por-los-siete-mares": "blog/boletines/seguros-para-navegar-por-los-siete-mares/", "semana-santa-2021-restricciones-y-limitaciones": "blog/boletines/semana-santa-2021-restricciones-y-limitaciones/", "ser-jefe-nunca-es-facil-pero-puede-ser-mas-seguro": "blog/boletines/ser-jefe-nunca-es-facil-pero-puede-ser-mas-seguro/", "sexta-nota-informativa-sobre-la-actividad-del-ccs-con-ocasion-de-la-er": "blog/archivo/volcan/sexta-nota-informativa-sobre-la-actividad-del-ccs-con-ocasion-de-la-er/", "si-regresas-a-casa-tan-feliz-como-te-has-ido-has-tenido-unas-buenas-va": "blog/boletines/si-regresas-a-casa-tan-feliz-como-te-has-ido-has-tenido-unas-buenas-va/", "teletrabajo-y-adaptacion-de-la-jornada": "blog/archivo/covid/teletrabajo-y-adaptacion-de-la-jornada/", "temporal-de-olas-en-la-cornisa-cantabrica-y-las-indemnizaciones-del-co": "blog/boletines/temporal-de-olas-en-la-cornisa-cantabrica-y-las-indemnizaciones-del-co/", "tercera-nota-informativa-del-ccs-sobre-las-indemnizaciones-de-los-dano": "blog/archivo/volcan/tercera-nota-informativa-del-ccs-sobre-las-indemnizaciones-de-los-dano/", "tienes-bote-salvavidas-pues-hazte-un-seguro-de-vida": "blog/boletines/tienes-bote-salvavidas-pues-hazte-un-seguro-de-vida/", "tractores-en-la-via-publica-seguro-itv-y-responsabilidad-civil": "blog/guias/vehiculos-industriales-y-agricolas/tractores-en-la-via-publica-seguro-itv-y-responsabilidad-civil/", "tranquilidad-en-la-segunda-residencia": "blog/boletines/tranquilidad-en-la-segunda-residencia/", "tranquilidad-en-las-aguas": "blog/boletines/tranquilidad-en-las-aguas/", "tu-negocio-protegido-con-seguros-multirriesgo": "blog/boletines/tu-negocio-protegido-con-seguros-multirriesgo/", "tus-derechos-frente-a-las-practicas-abusivas-de-la-banca": "blog/archivo/covid/tus-derechos-frente-a-las-practicas-abusivas-de-la-banca/", "un-seguro-para-los-momentos-mas-dificiles": "blog/boletines/un-seguro-para-los-momentos-mas-dificiles/", "una-jubilacion-100-despreocupada": "blog/boletines/una-jubilacion-100-despreocupada/", "una-semana-santa-sin-complicaciones": "blog/boletines/una-semana-santa-sin-complicaciones/", "ventajas-del-seguro-medico-dental": "blog/boletines/ventajas-del-seguro-medico-dental/", "viaje-de-carretera-en-coche-de-alquiler": "blog/boletines/viaje-de-carretera-en-coche-de-alquiler/", "vuelta-al-cole-a-todo-riesgo": "blog/boletines/vuelta-al-cole-a-todo-riesgo/", "zurich-y-su-iniciativa-economica-con-la-palma": "blog/archivo/volcan/zurich-y-su-iniciativa-economica-con-la-palma/", "que-es-un-corredor": "blog/publicaciones/que-es-un-corredor/"}, "glosario": ["t-accidente", "t-agravacion-del-riesgo", "t-ampliacion-de-coberturas", "t-asegurado", "t-asistencia-en-viaje", "t-autoseguro", "t-aviso-de-siniestro", "t-bases-tecnicas", "t-beneficiario", "t-capital-asegurado", "t-carencia", "t-carta-de-condiciones", "t-coaseguro", "t-compensacion-de-capitales", "t-condiciones-generales", "t-condiciones-particulares", "t-consorcio-de-compensacion-de-seguros", "t-continente", "t-contenido", "t-cooperativa-de-seguros", "t-copago", "t-corredor-de-seguros", "t-cuota", "t-dano-consecuencial", "t-defensa-juridica", "t-deducible", "t-dependencia", "t-expoliacion", "t-franquicia", "t-gastos-de-adquisicion", "t-i-c-e-a", "t-indemnizacion", "t-infraseguro", "t-interes-asegurable", "t-liberalizacion-de-prima", "t-multiple-seguro", "t-nota-informativa-previa", "t-periodo-de-cobertura", "t-poliza", "t-prima", "t-reasegurar", "t-regla-proporcional", "t-rehabilitacion", "t-responsabilidad-civil", "t-siniestro", "t-sobreseguro", "t-suma-asegurada", "t-tomador", "t-unespa", "t-valor-de-reposicion"], "fichas": ["seguro-accidentes-comercios.html", "seguro-accidentes-empresas.html", "seguro-accidentes-particulares.html", "seguro-administradores-empresas.html", "seguro-agrarios-empresas.html", "seguro-ahorro-comercios.html", "seguro-ahorro-empresas.html", "seguro-ahorro-particulares.html", "seguro-alquiler-vacacional-comercios.html", "seguro-alquiler-vacacional-particulares.html", "seguro-auto-comercios.html", "seguro-auto-particulares.html", "seguro-ciberseguridad-empresas.html", "seguro-comunidades-particulares.html", "seguro-credito-caucion-comercios.html", "seguro-credito-caucion-empresas.html", "seguro-decesos-comercios.html", "seguro-decesos-particulares.html", "seguro-defensa-juridica-comercios.html", "seguro-defensa-juridica-empresas.html", "seguro-defensa-juridica-particulares.html", "seguro-dependencia-esp-comercios.html", "seguro-dependencia-esp-empresas.html", "seguro-dependencia-esp-particulares.html", "seguro-drones-esp-comercios.html", "seguro-drones-esp-empresas.html", "seguro-drones-esp-particulares.html", "seguro-embarcaciones-recreo-particulares.html", "seguro-enfermedades-graves-particulares.html", "seguro-flota-vehiculos-comercios.html", "seguro-flota-vehiculos-empresas.html", "seguro-hogar-particulares.html", "seguro-impago-alquiler-comercios.html", "seguro-impago-alquiler-particulares.html", "seguro-inquilinos-particulares.html", "seguro-jubilacion-comercios.html", "seguro-jubilacion-empresas.html", "seguro-jubilacion-particulares.html", "seguro-maquinaria-agricola-comercios.html", "seguro-maquinaria-agricola-empresas.html", "seguro-medioambiental-empresas.html", "seguro-moto-comercios.html", "seguro-moto-empresas.html", "seguro-moto-particulares.html", "seguro-multirriesgo-comercio-comercios.html", "seguro-multirriesgo-industrial-empresas.html", "seguro-ocupacion-ilegal-particulares.html", "seguro-patinete-particulares.html", "seguro-piraguas-kayaks-esp-comercios.html", "seguro-piraguas-kayaks-esp-empresas.html", "seguro-piraguas-kayaks-esp-particulares.html", "seguro-resp-civil-comercios.html", "seguro-resp-civil-empresas.html", "seguro-resp-civil-particulares.html", "seguro-salud-comercios.html", "seguro-salud-empresas.html", "seguro-salud-particulares.html", "seguro-titulo-propiedad-esp-comercios.html", "seguro-titulo-propiedad-esp-particulares.html", "seguro-transportes-empresas.html", "seguro-vehiculos-industriales-agricolas-empresas.html", "seguro-vida-comercios.html", "seguro-vida-empresas.html", "seguro-vida-particulares.html"], "excepciones": {"ayuda-a-los-inquilinos-193": "blog/archivo/covid/hay-que-devolver-el-dinero-del-seguro-de-autos/"}};
+(function () {
+  var ruta = location.pathname;
+  var base = ruta.indexOf('/rya/') === 0 || ruta === '/rya' ? '/rya/' : '/';
+  var resto = ruta.slice(base.length) + location.search;
+  var d = destino(resto, DATOS);
+  ['ir-inicio', 'ir-blog', 'ir-contacto'].forEach(function (id) {
+    var a = document.getElementById(id); a.href = base + a.getAttribute('href').replace(/^\.\//, '');
+  });
+  if (d && (base + d) !== ruta) { location.replace(base + d); return; }
+  document.getElementById('titulo').textContent = 'No encontramos esta página';
+  document.getElementById('texto').textContent = 'Puede que la dirección haya cambiado con la nueva web. Desde aquí puedes seguir navegando o escribirnos.';
+  document.getElementById('botones').hidden = false;
+})();
+</script>
+</body>
+</html>

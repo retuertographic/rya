@@ -25,3 +25,11 @@ Sitio web estático y bilingüe de Retuerto y Asociados (227 páginas en españo
   el alto del marco para que no aparezca barra de desplazamiento. Las URL de los formularios y
   la tabla de altos están al principio de `assets/formulario-crm.js`.
 - Si el formulario del CRM publica su alto con `postMessage({height})`, se usa ese valor exacto.
+
+## Direcciones de la web anterior
+
+- `404.html` reconoce las direcciones de la web anterior (Joomla: `/blog-retuertoseguros/…`,
+  `/tienda-seguros-online-tenerife/…`, `/asistencia/diccionario-de-seguros/…`, etc.) y lleva a su
+  equivalente en la web nueva; si no hay equivalente, muestra una página de error con enlaces.
+- Las direcciones antiguas indexadas que se localizaron tienen además su propia redirección
+  (carpetas `blog-retuertoseguros/`, `tienda-seguros-online-tenerife/`, `seguros-para-…-tenerife/`…).
