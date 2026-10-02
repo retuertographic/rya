@@ -667,3 +667,9 @@ table.datos.pares td:first-child{
 .topbar .lang a{color:#C4D8CC;text-decoration:none}
 .topbar .lang a:hover{color:#fff}
 .topbar .lang [aria-current]{color:#fff;text-decoration:underline;text-underline-offset:3px}
+
+/* Formulario del CRM (partial: assets/formulario-crm.js) */
+.crm-form{margin-top:6px}
+.crm-form iframe{display:block;width:100%;border:0;overflow:hidden;background:transparent;height:740px}
+.crm-form-alt{margin:10px 0 0;font-size:13.5px;color:var(--muted)}
+.crm-form-alt a{color:inherit;text-decoration:underline}
