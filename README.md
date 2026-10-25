@@ -15,7 +15,7 @@ Sitio web bilingüe, generado con Jekyll por GitHub Pages, de Retuerto y Asociad
 - Las antiguas direcciones (`blog.html`, `categoria-*.html`, `articulo-*.html`) redirigen a las nuevas.
 - `assets/` — estilos, script y logotipos compartidos. `site.js` adapta sus textos al idioma de la página (`<html lang>`).
 - Cada página enlaza a su equivalente con el selector ES · EN de la barra superior y con `hreflang`.
-- Publicado con GitHub Pages (Deploy from a branch) en https://retuertographic.github.io/rya/ y https://retuertographic.github.io/rya/en/
+- Publicado con GitHub Pages (Deploy from a branch) en https://retuertoyasociados.com/ y https://retuertoyasociados.com/en/ (dominio propio: archivo `CNAME`)
 
 ## Formulario de contacto (CRM)
 
