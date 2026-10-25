@@ -63,5 +63,9 @@ GitHub Pages monta la web con Jekyll al publicar; el visitante recibe HTML está
 - Imágenes: `assets/img/`, en WebP y en varios anchos (`srcset`), sacadas del banco de Magnific (sin IA).
   Cabecera de la portada (`portada-*`, con versión vertical `portada-movil-*`), tarjetas de categoría
   (`<categoría>-400/800`, 16:10) y cabeceras de categoría (`<categoría>-cab-768/1280/1920`, 2,4:1).
+  Fichas: `seguro-<producto>-*` (una foto por seguro, compartida por sus versiones y por ES/EN).
+  Blog: `blog-g-*` (guías), `blog-p-*` (publicaciones) y `blog-s-*` (secciones: blog, boletines, COVID, volcán).
+  Cada foto tiene tarjeta (`-400/800`, 16:10) y cabecera (`-cab-768/1280/1920`, 2,4:1, con `object-position`
+  centrado en el motivo); toda tarjeta `.card.prod` que enlaza a una ficha o artículo con foto la muestra.
 - Dominio: al pasar a `retuertoyasociados.com`, cambiar `url` y `baseurl` en `_config.yml`.
 - Para probar en local: `bundle exec jekyll serve` con la gema `github-pages`.
