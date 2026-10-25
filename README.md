@@ -60,5 +60,8 @@ GitHub Pages monta la web con Jekyll al publicar; el visitante recibe HTML está
   - `actualizado`: fecha del último cambio de contenido (AAAA-MM-DD). Va al `<lastmod>` del sitemap y
     a la fecha de modificación de los artículos: **actualízala al cambiar el texto de una página**.
 - `sitemap.xml` y `robots.txt` se generan solos con todas las páginas.
+- Imágenes: `assets/img/`, en WebP y en varios anchos (`srcset`), sacadas del banco de Magnific (sin IA).
+  Cabecera de la portada (`portada-*`, con versión vertical `portada-movil-*`), tarjetas de categoría
+  (`<categoría>-400/800`, 16:10) y cabeceras de categoría (`<categoría>-cab-768/1280/1920`, 2,4:1).
 - Dominio: al pasar a `retuertoyasociados.com`, cambiar `url` y `baseurl` en `_config.yml`.
 - Para probar en local: `bundle exec jekyll serve` con la gema `github-pages`.

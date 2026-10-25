@@ -702,3 +702,21 @@ html.e404-redirige .e404-cuerpo,html.e404-redirige .e404 .panel{display:none}
 /* Páginas de error en inglés: se oculta la cabecera española hasta que se cambia por la inglesa */
 html.e404-en:not(.e404-listo) body > .topbar,html.e404-en:not(.e404-listo) body > .site-header,
 html.e404-en:not(.e404-listo) body > footer.site{visibility:hidden}
+
+/* Fotos de fondo en la cabecera de la portada y de las categorías, bajo un velo verde que mantiene el texto legible */
+.hero,.page-head.con-foto{position:relative;overflow:hidden;isolation:isolate}
+.foto-fondo{position:absolute;inset:0;z-index:-2}
+.foto-fondo img{width:100%;height:100%;max-width:none;object-fit:cover}
+.hero::before,.page-head.con-foto::before{content:"";position:absolute;inset:0;z-index:-1}
+.hero::before{background:
+  linear-gradient(0deg,rgba(12,44,30,.82) 0%,rgba(12,44,30,0) 50%),
+  linear-gradient(90deg,rgba(12,44,30,.95) 0%,rgba(18,61,43,.88) 40%,rgba(28,92,65,.6) 72%,rgba(28,92,65,.4) 100%)}
+.page-head.con-foto::before{background:linear-gradient(90deg,rgba(12,44,30,.94) 0%,rgba(18,61,43,.84) 48%,rgba(28,92,65,.5) 100%)}
+@media (max-width:700px){
+  .hero::before{background:linear-gradient(180deg,rgba(12,44,30,.74) 0%,rgba(18,61,43,.86) 100%)}
+  .page-head.con-foto::before{background:linear-gradient(180deg,rgba(12,44,30,.72) 0%,rgba(18,61,43,.86) 100%)}
+}
+/* Tarjetas con foto */
+.card.con-foto{overflow:hidden}
+.card .card-foto{display:block;width:calc(100% + 48px);max-width:none;height:auto;aspect-ratio:16/10;object-fit:cover;margin:-24px -24px 18px}
+.card.con-foto .ico{display:none}
