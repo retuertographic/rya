@@ -1,7 +1,6 @@
 {% include variables.html %}{% if page.destino contains "://" %}{% assign ir = page.destino %}{% assign ir_abs = page.destino %}{% else %}{% capture ir %}{{ r_raiz }}{{ page.destino }}{% endcapture %}{% capture ir_abs %}{{ base_abs }}/{{ page.destino }}{% endcapture %}{% endif %}<!DOCTYPE html>
 <html><head><meta charset="utf-8">
 <title>Redirigiendo…</title>
-<meta name="robots" content="noindex">
 <link rel="canonical" href="{{ ir_abs }}">
 <meta http-equiv="refresh" content="0; url={{ ir }}">
 </head>
