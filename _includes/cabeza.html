@@ -3,7 +3,8 @@
 <html lang="{% if page.lang == "en" %}en{% else %}es{% endif %}">
 <head>
 <meta charset="utf-8">
-{% include head-comun.html %}{% if page.bilingue %}{% include idioma-error.html %}{% endif %}<meta name="viewport" content="width=device-width, initial-scale=1">
+{% include head-comun.html %}{% if page.noindex %}<meta name="robots" content="noindex">
+{% endif %}{% if page.bilingue %}{% include idioma-error.html %}{% endif %}<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ page.title }}</title>
 <meta name="description" content="{{ page.description }}">
 {% unless page.pagina_error %}<link rel="canonical" href="{{ url_propia }}">

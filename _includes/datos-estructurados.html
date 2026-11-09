@@ -10,8 +10,35 @@
 "address":{"@type":"PostalAddress","streetAddress":"C/ Calderón de la Barca, Nº 2 of. 3","postalCode":"38005",
 "addressLocality":"Santa Cruz de Tenerife","addressRegion":"Canarias","addressCountry":"ES"},
 "identifier":{"@type":"PropertyValue","propertyID":"Registro DGSFP","value":"J-2690"},
+"areaServed":{"@type":"Country","name":"ES"},
+"contactPoint":{"@type":"ContactPoint","contactType":"customer service","telephone":"+34 922 235 203","email":"info@retuertoyasociados.com","availableLanguage":["es","en"]},
 "sameAs":["https://www.linkedin.com/company/retuertoseguros","https://www.facebook.com/RetuertoSeguros","https://www.instagram.com/retuertoseguros"]}
 </script>
+{%- if page.url == "/" or page.url == "/en/" %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","@id":{{ base_abs | append: "/#web" | jsonify }},
+"name":"Retuerto y Asociados, Correduría de Seguros","url":{{ base_abs | append: "/" | jsonify }},
+"inLanguage":["es","en"],"publisher":{"@id":{{ org_id | jsonify }}}}
+</script>
+{%- endif -%}
+{%- assign nombre_ficha = page.url | split: "/" | last -%}
+{%- if nombre_ficha contains "seguro-" and nombre_ficha contains ".html" and content contains '<h1>' -%}
+{%- assign producto = content | split: '<h1>' | slice: 1 | first | split: '</h1>' | first | strip_html | replace: "&amp;", "&" | replace: "&#x27;", "'" | strip -%}
+{%- assign producto_min = producto | downcase -%}
+{%- if producto_min contains "seguro" or producto_min contains "insurance" -%}{%- assign nombre_servicio = producto -%}
+{%- elsif page.lang == "en" -%}{%- assign nombre_servicio = producto | append: " insurance" -%}
+{%- else -%}{%- assign nombre_servicio = "Seguro de " | append: producto -%}{%- endif -%}
+{%- if nombre_ficha contains "-particulares.html" -%}{%- if page.lang == "en" -%}{%- assign publico = "Individuals" -%}{%- else -%}{%- assign publico = "Particulares" -%}{%- endif -%}
+{%- elsif nombre_ficha contains "-comercios.html" -%}{%- if page.lang == "en" -%}{%- assign publico = "Shops and the self-employed" -%}{%- else -%}{%- assign publico = "Comercios y autónomos" -%}{%- endif -%}
+{%- elsif nombre_ficha contains "-empresas.html" -%}{%- if page.lang == "en" -%}{%- assign publico = "Businesses" -%}{%- else -%}{%- assign publico = "Empresas" -%}{%- endif -%}
+{%- else -%}{%- assign publico = "" -%}{%- endif %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Service","name":{{ nombre_servicio | jsonify }},"serviceType":{{ producto | jsonify }},
+"description":{{ page.description | jsonify }},"url":{{ url_propia | jsonify }},"inLanguage":"{% if page.lang == "en" %}en{% else %}es{% endif %}",
+"category":"{% if page.lang == "en" %}Insurance brokerage{% else %}Correduría de seguros{% endif %}",{% if publico != "" %}"audience":{"@type":"Audience","audienceType":{{ publico | jsonify }}},{% endif %}
+"areaServed":{"@type":"Country","name":"ES"},"provider":{"@id":{{ org_id | jsonify }}}}
+</script>
+{%- endif -%}
 {%- if content contains '<div class="crumbs">' -%}
 {%- assign migas = content | split: '<div class="crumbs">' | slice: 1 | first | split: '</div>' | first | split: '<span>/</span>' -%}
 {%- assign carpetas = page.url | split: "/" -%}
